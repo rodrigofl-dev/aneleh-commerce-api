@@ -34,13 +34,13 @@ Não há prazos. O critério de avanço é sempre: **os critérios de aceite da 
 **Dependências:** nenhuma.
 
 **Checklist:**
-- [ ] `docker-compose.yml` com API, MySQL, Redis e RabbitMQ subindo juntos.
-- [ ] FastAPI respondendo em uma rota de teste.
-- [ ] Estrutura de pastas por Package by Feature criada (mesmo que módulos estejam vazios).
-- [ ] Alembic configurado e rodando a primeira migration (mesmo que vazia).
-- [ ] Black e Flake8 configurados e rodando localmente.
-- [ ] Pipeline básico do GitHub Actions (lint + format check) rodando em um push de teste.
-- [ ] Endpoints `/health` e `/ready` implementados (NFR-05).
+- [x] `docker-compose.yml` com API, MySQL, Redis e RabbitMQ subindo juntos.
+- [x] FastAPI respondendo em uma rota de teste.
+- [x] Estrutura de pastas por Package by Feature criada (mesmo que módulos estejam vazios).
+- [x] Alembic configurado e rodando a primeira migration (mesmo que vazia).
+- [x] Black e Flake8 configurados e rodando localmente.
+- [x] Pipeline básico do GitHub Actions (lint + format check) rodando em um push de teste.
+- [x] Endpoints `/health` e `/ready` implementados (NFR-05).
 
 **Definition of Done:** `docker-compose up` sobe o ambiente inteiro sem erro, `/health` e `/ready` retornam `200`, e o CI passa em um push trivial.
 

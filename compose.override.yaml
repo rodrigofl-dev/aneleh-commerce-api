@@ -1,0 +1,11 @@
+# Este arquivo é lido automaticamente pelo Docker Compose junto com o
+# compose.yaml, sempre que você roda `docker compose up`.
+# Ele existe apenas para conveniência de desenvolvimento local — não deve
+# representar como o projeto roda em CI/produção (isso é papel do
+# compose.yaml + Dockerfile, ver 07-deployment.md).
+
+services:
+  server:
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
