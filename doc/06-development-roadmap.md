@@ -59,8 +59,8 @@ Não há prazos. O critério de avanço é sempre: **os critérios de aceite da 
 **Dependências:** Fase 0.
 
 **Checklist:**
-- [ ] Tabelas `roles` e `users` migradas.
-- [ ] Registro de usuário (papel `customer` por padrão).
+- [x] Tabelas `roles` e `users` migradas.
+- [x] Registro de usuário (papel `customer` por padrão).
 - [ ] Login com JWT + `HTTPBearer`.
 - [ ] Logout com blacklist no Redis.
 - [ ] Dependency de checagem de papel (`require_role`).

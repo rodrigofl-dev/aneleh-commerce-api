@@ -69,7 +69,7 @@
 ### POST `/api/v1/auth/login`
 - **Objetivo:** autenticar e obter um JWT.
 - **Parâmetros (body):** `email`, `password`.
-- **Resposta esperada:** `200`, `{ "access_token": "...", "token_type": "bearer", "expires_in": 3600 }`.
+- **Resposta esperada:** `200`, `{ "access_token": "...", "token_type": "bearer", "expires_in": 3600, "user": { ... UserOut ... } }`. O usuário é incluído na resposta do login (decisão tomada na Fase 1) para evitar que o cliente precise chamar `GET /users/me` logo em seguida só para saber quem acabou de logar.
 - **Erros possíveis:** `401 INVALID_CREDENTIALS` (genérico, não revela se o e-mail existe).
 
 ### POST `/api/v1/auth/logout`
