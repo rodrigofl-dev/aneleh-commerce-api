@@ -1,14 +1,21 @@
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 from app.users.schemas import UserOut
 
 
-class LoginRequest(BaseModel):
+class NormalizeEmailMixin:
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, v):
+        return v.lower() if isinstance(v, str) else v
+
+
+class LoginRequest(NormalizeEmailMixin, BaseModel):
     email: EmailStr
     password: str
 
 
-class RegisterRequest(BaseModel):
+class RegisterRequest(NormalizeEmailMixin, BaseModel):
     name: str
     email: EmailStr
     password: str = Field(min_length=8)

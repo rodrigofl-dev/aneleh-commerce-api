@@ -4,7 +4,7 @@ from app.core.exceptions import (
     EmailAlreadyExistsError,
     InvalidRoleError,
     LastAdminCannotBeDemotedError,
-    ResourceNotFoundError,
+    UserNotFoundError,
 )
 
 from app.core.security import hash_password
@@ -22,7 +22,7 @@ class UserService:
         if data.email and data.email != user.email:
             existing = self.repository.get_by_email(data.email)
             if existing:
-                raise EmailAlreadyExistsError()
+                raise EmailAlreadyExistsError
             user.email = data.email
 
         if data.name:
@@ -38,7 +38,7 @@ class UserService:
     def get_by_id(self, user_id: int) -> User:
         user = self.repository.get_by_id(user_id)
         if not user:
-            raise ResourceNotFoundError(
+            raise UserNotFoundError(
                 details={
                     "user_id": user_id,
                 }
@@ -50,7 +50,7 @@ class UserService:
 
         if user.role.name == "admin" and data.role != "admin":
             if self.repository.count_admins() <= 1:
-                raise LastAdminCannotBeDemotedError()
+                raise LastAdminCannotBeDemotedError
 
         new_role = self.repository.get_role_by_name(data.role)
         if not new_role:

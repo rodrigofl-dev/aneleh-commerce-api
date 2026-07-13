@@ -15,14 +15,16 @@ def verify_password(plain_password: str, password_hash: str) -> bool:
 
 
 def create_access_token(subject: str) -> str:
-    """`subject` é o id do usuário (como string), gravado no claim `sub`."""
     expire = datetime.now(timezone.utc) + timedelta(
         seconds=settings.jwt_expiration_seconds
     )
     payload = {"sub": subject, "exp": expire}
-    return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+    return jwt.encode(
+        payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm
+    )
 
 
 def decode_access_token(token: str) -> dict:
-    """Lança jwt.PyJWTError se o token for inválido ou estiver expirado."""
-    return jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm])
+    return jwt.decode(
+        token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm]
+    )

@@ -4,8 +4,9 @@ from fastapi import HTTPException, status
 class AppException(HTTPException):
     """Base domain exception. All business exceptions inherit from this.
 
-    I've already structured the `detail` in the format expected by the handler in `core/errors.py`
-    ({"code", "message", "details"}) — so no other part of the code needs to construct this dictionary manually.
+    I've already structured the `detail` in the format
+    expected by the handler in `core/errors.py` ({"code", "message", "details"})
+    so no other part of the code needs to construct this dictionary manually.
     """
 
     status_code: int = status.HTTP_400_BAD_REQUEST
@@ -25,10 +26,14 @@ class AppException(HTTPException):
 
 # --- Auth ---
 
+
 class AuthenticationRequiredError(AppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     code = "AUTHENTICATION_REQUIRED"
-    message = "Authentication is required to access this resource. Please sign in and try again."
+    message = (
+        "Authentication is required to access this resource. "
+        "Please sign in and try again."
+    )
 
 
 class InvalidCredentialsError(AppException):
@@ -57,10 +62,14 @@ class ForbiddenError(AppException):
 
 # --- Users ---
 
+
 class EmailAlreadyExistsError(AppException):
     status_code = status.HTTP_409_CONFLICT
     code = "EMAIL_ALREADY_EXISTS"
-    message = "An account with this email is already registered. Please sign in or use the password recovery option."
+    message = (
+        "An account with this email is already registered. "
+        "Please sign in or use the password recovery option."
+    )
 
 
 class LastAdminCannotBeDemotedError(AppException):
@@ -75,10 +84,10 @@ class InvalidRoleError(AppException):
     message = "Invalid role."
 
 
-# --- Generic ---
-
-class ResourceNotFoundError(AppException):
+class UserNotFoundError(AppException):
     status_code = status.HTTP_404_NOT_FOUND
-    code = "RESOURCE_NOT_FOUND"
-    message = "The requested resource could not be found."
+    code = "USER_NOT_FOUND"
+    message = "User not found."
 
+
+# --- Generic ---

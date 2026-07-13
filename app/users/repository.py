@@ -17,12 +17,7 @@ class UserRepository:
         return self.db.query(Role).filter(Role.name == name).first()
 
     def count_admins(self) -> int:
-        return (
-            self.db.query(User)
-            .join(Role)
-            .filter(Role.name == "admin")
-            .count()
-        )
+        return self.db.query(User).join(Role).filter(Role.name == "admin").count()
 
     def save(self, user: User) -> User:
         self.db.add(user)

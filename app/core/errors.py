@@ -3,7 +3,9 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 
-def _error_response(status_code: int, code: str, message: str, details: dict | None = None):
+def _error_response(
+    status_code: int, code: str, message: str, details: dict | None = None
+):
     return JSONResponse(
         status_code=status_code,
         content={
@@ -34,7 +36,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    # Automatic Pydantic/FastAPI validation errors (422) — bad schema, missing field, etc.
+    # Automatic Pydantic/FastAPI validation errors (422)
     return _error_response(
         status.HTTP_422_UNPROCESSABLE_CONTENT,
         "VALIDATION_ERROR",

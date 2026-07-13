@@ -6,7 +6,9 @@ from app.users.models import User
 from app.users.schemas import UserOut, UserRoleUpdate, UserUpdate
 from app.users.service import UserService
 
-router = APIRouter(prefix="/users", tags=["users"])#, dependencies=[Depends(get_current_user)])
+router = APIRouter(
+    prefix="/users", tags=["users"], dependencies=[Depends(get_current_user)]
+)
 
 
 @router.get("/me", response_model=UserOut)
@@ -27,7 +29,7 @@ def update_my_profile(
 @router.get(
     "/{user_id}",
     response_model=UserOut,
-    #dependencies=[Depends(require_role("admin"))],
+    dependencies=[Depends(require_role("admin"))],
 )
 def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
     service = UserService(db)

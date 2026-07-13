@@ -33,13 +33,12 @@ def get_current_user(
 
     try:
         payload = decode_access_token(credentials.credentials)
-        user_id = int(payload["sub"])
     except (jwt.PyJWTError, KeyError, ValueError):
         raise InvalidTokenOrExpiredError()
 
-    # TODO (módulo AUTH, RF-AUTH-03): checar blacklist no Redis antes de aceitar o token.
+    # TODO (módulo AUTH, RF-AUTH-03): checar blacklist no Redis antes de aceitar o token
 
-    user = db.query(User).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.id == int(payload["sub"])).first()
     if not user:
         raise InvalidTokenOrExpiredError()
 

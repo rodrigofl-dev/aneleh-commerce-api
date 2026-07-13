@@ -1,9 +1,16 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 
-RoleName = Literal["admin","customer"]
+RoleName = Literal["admin", "customer"]
+
+
+class NormalizeEmailMixin:
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, v):
+        return v.lower() if isinstance(v, str) else v
 
 
 class RoleOut(BaseModel):
@@ -24,7 +31,7 @@ class UserOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class UserUpdate(BaseModel):
+class UserUpdate(NormalizeEmailMixin, BaseModel):
     name: str | None = None
     email: EmailStr | None = None
     password: str | None = None
