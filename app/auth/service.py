@@ -1,10 +1,19 @@
+import jwt
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-
-from app.core.exceptions import EmailAlreadyExistsError, InvalidCredentialsError
-
-from app.core.security import hash_password, verify_password, create_access_token
+from app.core.exceptions import (
+    EmailAlreadyExistsError,
+    InvalidCredentialsError,
+    InvalidTokenOrExpiredError,
+)
+from app.core.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+    decode_access_token,
+)
+from app.core.token_blacklist import blacklist_token
 
 from app.users.models import User
 from app.users.repository import UserRepository
@@ -41,3 +50,11 @@ class AuthService:
             expires_in=settings.jwt_expiration_seconds,
             user=user,
         )
+
+    def logout(self, token: str) -> None:
+        try:
+            payload = decode_access_token(token)
+        except jwt.PyJWTError:
+            raise InvalidTokenOrExpiredError
+
+        blacklist_token(token, payload["exp"])

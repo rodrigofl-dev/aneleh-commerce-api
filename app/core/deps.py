@@ -7,9 +7,11 @@ from app.core.exceptions import (
     AuthenticationRequiredError,
     ForbiddenError,
     InvalidTokenOrExpiredError,
+    TokenRevokedError,
 )
 from app.core.database import SessionLocal
 from app.core.security import decode_access_token
+from app.core.token_blacklist import is_token_blacklisted
 from app.users.models import User
 
 # auto_error=False: because HTTPBearer raise 403 instead of 401
@@ -31,14 +33,18 @@ def get_current_user(
     if credentials is None:
         raise AuthenticationRequiredError()
 
+    token = credentials.credentials
+
+    if is_token_blacklisted(token):
+        raise TokenRevokedError()
+
     try:
-        payload = decode_access_token(credentials.credentials)
+        payload = decode_access_token(token)
+        user_id = int(payload["sub"])
     except (jwt.PyJWTError, KeyError, ValueError):
         raise InvalidTokenOrExpiredError()
 
-    # TODO (módulo AUTH, RF-AUTH-03): checar blacklist no Redis antes de aceitar o token
-
-    user = db.query(User).filter(User.id == int(payload["sub"])).first()
+    user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise InvalidTokenOrExpiredError()
 

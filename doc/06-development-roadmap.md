@@ -61,11 +61,11 @@ Não há prazos. O critério de avanço é sempre: **os critérios de aceite da 
 **Checklist:**
 - [x] Tabelas `roles` e `users` migradas.
 - [x] Registro de usuário (papel `customer` por padrão).
-- [ ] Login com JWT + `HTTPBearer`.
-- [ ] Logout com blacklist no Redis.
-- [ ] Dependency de checagem de papel (`require_role`).
-- [ ] Endpoints de perfil (`/users/me`) e gestão de papel (`admin`).
-- [ ] Seed inicial: pelo menos um usuário `admin` criado via script/migration.
+- [x] Login com JWT + `HTTPBearer`.
+- [x] Logout com blacklist no Redis.
+- [x] Dependency de checagem de papel (`require_role`).
+- [x] Endpoints de perfil (`/users/me`) e gestão de papel (`admin`).
+- [x] Seed inicial: pelo menos um usuário `admin` criado via script/migration.
 
 **Definition of Done:** é possível registrar, logar, acessar um endpoint protegido, deslogar e confirmar que o token deslogado é rejeitado — tudo via Swagger.
 

@@ -7,7 +7,8 @@ from app.core.exceptions import (
     UserNotFoundError,
 )
 
-from app.core.security import hash_password
+from app.core.security import hash_password, decode_access_token
+from app.core.token_blacklist import blacklist_token
 from app.users.models import User
 from app.users.repository import UserRepository
 from app.users.schemas import UserRoleUpdate, UserUpdate
@@ -18,7 +19,7 @@ class UserService:
         self.db = db
         self.repository = UserRepository(db)
 
-    def update_profile(self, user: User, data: UserUpdate) -> User:
+    def update_profile(self, user: User, data: UserUpdate, token: str) -> User:
         if data.email and data.email != user.email:
             existing = self.repository.get_by_email(data.email)
             if existing:
@@ -30,8 +31,8 @@ class UserService:
 
         if data.password:
             user.password_hash = hash_password(data.password)
-            # TODO (módulo AUTH, RF-USERS-02): invalidar tokens antigos via
-            # blacklist no Redis quando a senha é trocada.
+            payload = decode_access_token(token)
+            blacklist_token(token, payload["exp"])
 
         return self.repository.save(user)
 
@@ -43,6 +44,7 @@ class UserService:
                     "user_id": user_id,
                 }
             )
+
         return user
 
     def update_role(self, user_id: int, data: UserRoleUpdate) -> User:
@@ -61,4 +63,5 @@ class UserService:
             )
 
         user.role = new_role
+
         return self.repository.save(user)

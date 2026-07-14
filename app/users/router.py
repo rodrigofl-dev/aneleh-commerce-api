@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
+from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user, get_db, require_role
+from app.core.deps import get_current_user, get_db, require_role, bearer_scheme
 from app.users.models import User
 from app.users.schemas import UserOut, UserRoleUpdate, UserUpdate
 from app.users.service import UserService
@@ -19,11 +20,12 @@ def read_my_profile(current_user: User = Depends(get_current_user)):
 @router.patch("/me", response_model=UserOut)
 def update_my_profile(
     data: UserUpdate,
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     service = UserService(db)
-    return service.update_profile(current_user, data)
+    return service.update_profile(current_user, data, credentials.credentials)
 
 
 @router.get(

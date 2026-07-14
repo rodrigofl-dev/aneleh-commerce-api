@@ -74,13 +74,13 @@ Configuração via `pydantic-settings`, lida de um arquivo `.env` (não versiona
 docker compose up -d
 
 # rodar as migrações
-docker compose exec api alembic upgrade head
+docker compose exec server alembic upgrade head
 
 # popular dados de demonstração
-docker compose exec api python -m app.scripts.seed
+docker compose exec server python -m app.scripts.seed
 
 # acompanhar logs da API
-docker compose logs -f api
+docker compose logs -f server
 ```
 
 Após esses passos, a API está disponível em `http://localhost:8000/docs` (Swagger UI) e o painel do RabbitMQ em `http://localhost:15672`.
