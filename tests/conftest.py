@@ -1,5 +1,6 @@
 import pymysql
 import pytest
+import os
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, insert
 from sqlalchemy.engine import make_url
@@ -15,7 +16,10 @@ from app.users.models import (
     User,
 )  # noqa: F401 (registers models on Base.metadata)
 
-TEST_DATABASE_URL = "mysql+pymysql://root:root@db:3306/aneleh_commerce_test"
+TEST_DATABASE_URL = os.environ.get(
+    "TEST_DATABASE_URL",
+    "mysql+pymysql://root:root@db:3306/aneleh_commerce_test",
+)
 
 
 def _ensure_test_database_exists() -> None:
