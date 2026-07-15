@@ -15,7 +15,7 @@ def blacklist_token(token: str, expires_at: int) -> None:
     """
     ttl = expires_at - int(datetime.now(timezone.utc).timestamp())
     if ttl > 0:
-        redis_client.setex(f"{_KEY_PREFIX}{token}", ttl, "1")
+        redis_client.set(f"{_KEY_PREFIX}{token}", "1", ex=ttl)
 
 
 def is_token_blacklisted(token: str) -> bool:

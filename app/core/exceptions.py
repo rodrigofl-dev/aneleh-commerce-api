@@ -39,7 +39,7 @@ class AuthenticationRequiredError(AppException):
 class InvalidCredentialsError(AppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     code = "INVALID_CREDENTIALS"
-    message = "Incorrect email or password."
+    message = "Invalid credentials."
 
 
 class InvalidTokenOrExpiredError(AppException):
