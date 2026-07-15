@@ -10,7 +10,10 @@ from app.core.database import Base
 from app.core.deps import get_db
 from app.core.redis_client import redis_client
 from app.main import app
-from app.users.models import Role, User  # noqa: F401 (registers models on Base.metadata)
+from app.users.models import (
+    Role,
+    User,
+)  # noqa: F401 (registers models on Base.metadata)
 
 TEST_DATABASE_URL = "mysql+pymysql://root:root@db:3306/aneleh_commerce_test"
 
@@ -126,4 +129,5 @@ def get_user_by_email(db_session):
         user = db_session.query(User).filter(User.email == email).first()
         assert user is not None, f"No user found with email {email}"
         return user
+
     return _factory

@@ -30,7 +30,11 @@ def test_register_treats_email_case_as_duplicate(client):
 
     response = client.post(
         "/api/v1/auth/register",
-        json={"name": "Bob Again", "email": "bob@example.com", "password": "supersecret"},
+        json={
+            "name": "Bob Again",
+            "email": "bob@example.com",
+            "password": "supersecret",
+        },
     )
 
     assert response.status_code == 409

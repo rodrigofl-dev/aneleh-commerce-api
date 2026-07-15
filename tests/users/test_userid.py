@@ -6,7 +6,7 @@ def test_userid_without_token_returns_401(client):
 
 
 def test_userid_returns_all_expected_fields(
-        client, register_and_get_token, get_user_by_email
+    client, register_and_get_token, get_user_by_email
 ):
     admin_token = register_and_get_token("apoc@example.com", role="admin")
     apoc = get_user_by_email("apoc@example.com")
@@ -17,7 +17,7 @@ def test_userid_returns_all_expected_fields(
 
     assert response.status_code == 200
     body = response.json()
-    
+
     expected_fields = ["id", "name", "email", "role", "created_at", "updated_at"]
     for field in expected_fields:
         assert field in body
@@ -71,7 +71,7 @@ def test_get_user_by_id_not_found(client, register_and_get_token):
 
 
 def test_update_role_forbidden_for_customer(
-        client, register_and_get_token, get_user_by_email
+    client, register_and_get_token, get_user_by_email
 ):
     customer_token = register_and_get_token("apoc@example.com")
     apoc = get_user_by_email("apoc@example.com")
@@ -79,7 +79,7 @@ def test_update_role_forbidden_for_customer(
     response = client.patch(
         f"/api/v1/users/{apoc.id}/role",
         headers={"Authorization": f"Bearer {customer_token}"},
-        json={"role": "admin"}
+        json={"role": "admin"},
     )
 
     assert response.status_code == 403
@@ -87,7 +87,7 @@ def test_update_role_forbidden_for_customer(
 
 
 def test_admin_can_be_demoted_when_not_the_last_one(
-        client, register_and_get_token, get_user_by_email
+    client, register_and_get_token, get_user_by_email
 ):
     admin_token = register_and_get_token("apoc@example.com", role="admin")
     register_and_get_token("neo@example.com", role="admin")
@@ -97,7 +97,7 @@ def test_admin_can_be_demoted_when_not_the_last_one(
     response = client.patch(
         f"/api/v1/users/{neo.id}/role",
         headers={"Authorization": f"Bearer {admin_token}"},
-        json={"role": "customer"}
+        json={"role": "customer"},
     )
 
     assert response.status_code == 200
@@ -105,7 +105,7 @@ def test_admin_can_be_demoted_when_not_the_last_one(
 
 
 def test_last_admin_cannot_be_demoted(
-        client, register_and_get_token, get_user_by_email
+    client, register_and_get_token, get_user_by_email
 ):
     admin_token = register_and_get_token("apoc@example.com", role="admin")
     apoc = get_user_by_email("apoc@example.com")
@@ -113,7 +113,7 @@ def test_last_admin_cannot_be_demoted(
     response = client.patch(
         f"/api/v1/users/{apoc.id}/role",
         headers={"Authorization": f"Bearer {admin_token}"},
-        json={"role": "customer"}
+        json={"role": "customer"},
     )
 
     assert response.status_code == 409
