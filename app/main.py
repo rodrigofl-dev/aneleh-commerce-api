@@ -1,3 +1,7 @@
+import json
+from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,10 +12,19 @@ from app.core.health import router as health_router
 from app.users.router import router as users_router
 from app.auth.router import router as auth_router
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    schema_path = Path("swagger/openapi.json")
+    schema_path.write_text(
+        json.dumps(app.openapi(), indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    yield
+
 app = FastAPI(
     title=settings.project_name,
     version=settings.api_version,
-    # lifespan=lifespan,
+    lifespan=lifespan,
 )
 
 app.add_middleware(
