@@ -4,6 +4,8 @@
 
 services:
   server:
+    mem_limit: 512m # DEV config
+    restart: unless-stopped # DEV config
     build:
       context: .
     ports:
@@ -19,9 +21,12 @@ services:
         condition: service_healthy
 
   worker:
+    mem_limit: 512m # DEV config
+    restart: unless-stopped # DEV config
     build:
       context: .
-    command: celery -A app.core.celery_app worker --loglevel=info
+    #command: celery -A app.core.celery_app worker --loglevel=info
+    command: celery -A app.core.celery_app worker --loglevel=info --concurrency=1
     env_file:
       - .env
     depends_on:
@@ -33,6 +38,7 @@ services:
         condition: service_healthy
 
   db:
+    mem_limit: 512m # DEV config
     image: mysql:8.0
     restart: always
     env_file:
@@ -44,6 +50,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
     expose:
       - 3306
     healthcheck:
@@ -54,7 +61,9 @@ services:
       start_period: 60s
 
   redis:
+    mem_limit: 128m # DEV config
     image: redis:7-alpine
+    command: redis-server --maxmemory 64mb --maxmemory-policy allkeys-lru  # DEV config
     restart: always
     expose:
       - 6379
@@ -65,6 +74,7 @@ services:
       retries: 10
 
   rabbitmq:
+    mem_limit: 256m # DEV config
     image: rabbitmq:3-management-alpine
     restart: always
     ports:
