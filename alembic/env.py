@@ -8,7 +8,8 @@ from alembic import context
 import os
 
 from app.core.database import Base
-from app.users import models  # importa os models pra registrar no Base.metadata
+import app.main  # noqa: F401 (importing main pulls in every router -> service -> models,
+# registering all models on Base.metadata without needing to list them one by one here)
 
 
 # this is the Alembic Config object, which provides

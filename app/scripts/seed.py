@@ -16,7 +16,7 @@ from app.users.repository import UserRepository
 # for anything beyond local development.
 ADMIN_NAME = "Admin"
 ADMIN_EMAIL = "admin@anelehcommerce.com"
-ADMIN_PASSWORD = "p@ss123"
+ADMIN_PASSWORD = "123"
 
 
 def seed_admin_user(db) -> None:

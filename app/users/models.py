@@ -1,5 +1,7 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
-from sqlalchemy.orm import relationship
+from datetime import datetime
+
+from sqlalchemy import DateTime, ForeignKey, String, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
 
@@ -7,23 +9,25 @@ from app.core.database import Base
 class Role(Base):
     __tablename__ = "roles"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30), unique=True, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30), unique=True)
 
-    users = relationship("User", back_populates="role")
+    users: Mapped[list["User"]] = relationship(back_populates="role")
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(120), nullable=False)
-    email = Column(String(180), unique=True, nullable=False, index=True)
-    password_hash = Column(String(255), nullable=False)
-    role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+    email: Mapped[str] = mapped_column(String(180), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    role = relationship("Role", back_populates="users")
+    role: Mapped["Role"] = relationship(back_populates="users")
