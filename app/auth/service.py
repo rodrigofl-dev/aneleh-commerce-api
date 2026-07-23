@@ -6,6 +6,7 @@ from app.core.exceptions import (
     EmailAlreadyExistsError,
     InvalidCredentialsError,
     InvalidTokenOrExpiredError,
+    InternalConfigurationError,
 )
 from app.core.security import (
     hash_password,
@@ -25,11 +26,20 @@ class AuthService:
         self.db = db
         self.repository = UserRepository(db)
 
+    # API #
+
     def register(self, data: RegisterRequest) -> User:
         if self.repository.get_by_email(data.email) is not None:
             raise EmailAlreadyExistsError
 
         customer_role = self.repository.get_role_by_name("customer")
+        if customer_role is None:
+            raise InternalConfigurationError(
+                message="Default role 'customer' is not configured.",
+                details={
+                    "role": "customer"
+                },
+            )
 
         user = User(
             name=data.name,
