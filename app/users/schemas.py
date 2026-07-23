@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator, Field
 
 RoleName = Literal["admin", "customer"]
 
@@ -32,9 +32,9 @@ class UserOut(BaseModel):
 
 
 class UserUpdate(NormalizeEmailMixin, BaseModel):
-    name: str | None = None
+    name: str | None = Field(default=None, min_length=1)
     email: EmailStr | None = None
-    password: str | None = None
+    password: str | None = Field(default=None, min_length=8)
 
 
 class UserRoleUpdate(BaseModel):
