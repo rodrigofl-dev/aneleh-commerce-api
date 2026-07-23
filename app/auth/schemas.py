@@ -16,7 +16,7 @@ class LoginRequest(NormalizeEmailMixin, BaseModel):
 
 
 class RegisterRequest(NormalizeEmailMixin, BaseModel):
-    name: str
+    name: str = Field(min_length=1)
     email: EmailStr
     password: str = Field(min_length=8)
 
