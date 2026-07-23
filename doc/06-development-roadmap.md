@@ -85,7 +85,7 @@ Não há prazos. O critério de avanço é sempre: **os critérios de aceite da 
 
 **Checklist:**
 - [ ] Tabela `categories` e `products` migradas.
-- [ ] CRUD de categoria com soft delete e bloqueio se houver produto vinculado.
+- [ ] CRUD de categoria com exclusão real, bloqueada se houver produto vinculado.
 - [ ] CRUD de produto com validação de preço e vínculo obrigatório a categoria.
 - [ ] Seed com categorias e produtos de exemplo (NFR-09).
 

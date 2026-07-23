@@ -112,10 +112,10 @@ Para cada requisito funcional constam:
 ### RF-CATALOG-01 — Cadastro de categoria
 
 - **Descrição:** `admin` cria categorias de produto.
-- **Regra de negócio:** nome de categoria é único; categoria pode ser desativada (soft delete) mas não excluída se houver produtos vinculados.
+- **Regra de negócio:** nome de categoria é único; categoria com produtos vinculados não pode ser excluída (`DELETE`)..
 - **Critérios de aceite:**
   - [ ] Categoria duplicada é rejeitada.
-  - [ ] Categoria com produtos vinculados não pode ser removida, apenas desativada.
+  - [ ] Categoria com produtos vinculados não pode ser excluída (`409 CATEGORY_HAS_PRODUCTS`).
 - **Dependências:** RF-AUTH-04.
 
 ### RF-CATALOG-02 — Cadastro de produto

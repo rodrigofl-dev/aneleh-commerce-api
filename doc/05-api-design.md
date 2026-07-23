@@ -116,7 +116,7 @@
 | Listar categorias | GET | `/api/v1/categories` | Pública | — |
 | Detalhe da categoria | GET | `/api/v1/categories/{id}` | Pública | — |
 | Atualizar categoria | PATCH | `/api/v1/categories/{id}` | Requerida | `admin` |
-| Desativar categoria | DELETE | `/api/v1/categories/{id}` | Requerida | `admin` |
+| Excluir categoria | DELETE | `/api/v1/categories/{id}` | Requerida | `admin` |
 
 ### POST `/api/v1/categories`
 - **Parâmetros (body):** `name`.
@@ -128,8 +128,15 @@
 - **Resposta esperada:** `200`, lista paginada.
 
 ### DELETE `/api/v1/categories/{id}`
-- **Regra:** soft delete (marca `active=false`).
-- **Erros possíveis:** `409 CATEGORY_HAS_PRODUCTS` se houver produtos vinculados (RF-CATALOG-01).
+- **Regra:** exclusão real (não é soft delete — `active` não tem relação com exclusão, ver `04-database.md`).
+- **Resposta esperada:** `204`.
+- **Erros possíveis:** `409 CATEGORY_HAS_PRODUCTS` se houver produtos vinculados (RF-CATALOG-01). Bloqueio reforçado no banco via `ON DELETE RESTRICT` na FK `products.category_id`.
+
+### PATCH `/api/v1/categories/{id}`
+- **Parâmetros (body):** `name`.
+- **Objetivo:** atualizar nome.
+- **Resposta esperada:** `200`, categoria atualizada.
+- **Erros possíveis:** `409 CATEGORY_ALREADY_EXISTS` (se `name` colidir com outra categoria); `404` se categoria não existir.
 
 ---
 

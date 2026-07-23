@@ -47,7 +47,6 @@ A modelagem segue a mesma organização por domínio usada no código (`users`, 
 |---|---|---|
 | id | INT, PK | |
 | name | VARCHAR(100) | único |
-| active | BOOLEAN | soft delete (RF-CATALOG-01) |
 | created_at | DATETIME | |
 
 ### `products`
@@ -190,7 +189,6 @@ erDiagram
     CATEGORIES {
         int id PK
         string name
-        boolean active
         datetime created_at
     }
     PRODUCTS {
