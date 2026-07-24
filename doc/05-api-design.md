@@ -128,7 +128,7 @@
 - **Resposta esperada:** `200`, lista paginada.
 
 ### DELETE `/api/v1/categories/{id}`
-- **Regra:** exclusão real (não é soft delete — `active` não tem relação com exclusão, ver `04-database.md`).
+- **Regra:** exclusão real.
 - **Resposta esperada:** `204`.
 - **Erros possíveis:** `409 CATEGORY_HAS_PRODUCTS` se houver produtos vinculados (RF-CATALOG-01). Bloqueio reforçado no banco via `ON DELETE RESTRICT` na FK `products.category_id`.
 
