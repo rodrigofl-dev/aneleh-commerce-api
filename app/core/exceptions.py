@@ -90,4 +90,32 @@ class UserNotFoundError(AppException):
     message = "User not found."
 
 
+# --- Categories ---
+
+
+class CategoryNotFoundError(AppException):
+    status_code = status.HTTP_404_NOT_FOUND
+    code = "CATEGORY_NOT_FOUND"
+    message = "Category not found."
+
+
+class CategoryAlreadyExistsError(AppException):
+    status_code = status.HTTP_409_CONFLICT
+    code = "CATEGORY_ALREADY_EXISTS"
+    message = "A category with this name is already registered."
+
+
+class CategoryHasProductsError(AppException):
+    status_code = status.HTTP_409_CONFLICT
+    code = "CATEGORY_HAS_PRODUCTS"
+    message = "You can't delete a category with products."
+
+
 # --- Generic ---
+
+
+class InternalConfigurationError(AppException):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    code = "INTERNAL_CONFIGURATION_ERROR"
+    message = "A required configuration is missing or invalid. Please contact support."
+
