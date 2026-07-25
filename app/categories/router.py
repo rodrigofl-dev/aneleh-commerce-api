@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends, status, Query
 
 from sqlalchemy.orm import Session
 from app.core.deps import get_db, require_role
-from app.categories.schemas import CategoryOut, CategoryCreate, CategoryUpdate
-from app.core.schemas import PaginatedResponse
+from app.categories.schemas import CategoryOut, CategoryCreate, CategoryUpdate, CategoryListResponse
 from app.categories.service import CategoryService
 
 router = APIRouter(prefix="/categories", tags=["categories"])
@@ -20,7 +19,7 @@ def create_category(data: CategoryCreate, db: Session = Depends(get_db)):
     return service.new_category(data)
 
 
-@router.get("", response_model=PaginatedResponse[CategoryOut])
+@router.get("", response_model=CategoryListResponse)
 def list_categories(
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
@@ -28,7 +27,7 @@ def list_categories(
 ):
     service = CategoryService(db)
     items, total = service.get_all(limit, offset)
-    return PaginatedResponse(items=items, total=total, limit=limit, offset=offset)
+    return CategoryListResponse(items=items, total=total, limit=limit, offset=offset)
 
 
 @router.get("/{category_id}", response_model=CategoryOut)
