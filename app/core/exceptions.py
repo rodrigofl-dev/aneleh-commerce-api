@@ -31,33 +31,36 @@ class AuthenticationRequiredError(AppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     code = "AUTHENTICATION_REQUIRED"
     message = (
-        "Authentication is required to access this resource. "
-        "Please sign in and try again."
+        "É necessário autenticação para acessar esse recurso."
+        "Por favor faça login e tente novamente."
     )
 
 
 class InvalidCredentialsError(AppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     code = "INVALID_CREDENTIALS"
-    message = "Invalid credentials."
+    message = "Credenciais inválidas."
 
 
 class InvalidTokenOrExpiredError(AppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     code = "INVALID_OR_EXPIRED_TOKEN"
-    message = "Your authentication token is invalid or expired. Please sign in again."
+    message = (
+        "Seu token de autenticação está inválido ou expirado."
+        "Por favor faça um novo login."
+    )
 
 
 class TokenRevokedError(AppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     code = "TOKEN_REVOKED"
-    message = "Your session is no longer valid. Please sign in again."
+    message = "Sua sessão não é mais válida. Por favor faça um novo login."
 
 
 class ForbiddenError(AppException):
     status_code = status.HTTP_403_FORBIDDEN
     code = "INSUFFICIENT_PERMISSIONS"
-    message = "You do not have permission to perform this action."
+    message = "Você não tem permissão para realizar esta ação."
 
 
 # --- Users ---
@@ -67,27 +70,27 @@ class EmailAlreadyExistsError(AppException):
     status_code = status.HTTP_409_CONFLICT
     code = "EMAIL_ALREADY_EXISTS"
     message = (
-        "An account with this email is already registered. "
-        "Please sign in or use the password recovery option."
+        "Uma conta com este e-mail já está registrada. "
+        "Por favor faça login ou use a opção de recuperação de senha."
     )
 
 
 class LastAdminCannotBeDemotedError(AppException):
     status_code = status.HTTP_409_CONFLICT
     code = "LAST_ADMIN_CANNOT_BE_DEMOTED"
-    message = "The last administrator account cannot be demoted."
+    message = "O último administrador não pode ser removido."
 
 
 class InvalidRoleError(AppException):
     status_code = status.HTTP_422_UNPROCESSABLE_CONTENT
     code = "INVALID_ROLE"
-    message = "Invalid role."
+    message = "Papel inválido."
 
 
 class UserNotFoundError(AppException):
     status_code = status.HTTP_404_NOT_FOUND
     code = "USER_NOT_FOUND"
-    message = "User not found."
+    message = "Usuário não encontrado."
 
 
 # --- Categories ---
@@ -96,19 +99,19 @@ class UserNotFoundError(AppException):
 class CategoryNotFoundError(AppException):
     status_code = status.HTTP_404_NOT_FOUND
     code = "CATEGORY_NOT_FOUND"
-    message = "Category not found."
+    message = "Categoria não encontrada."
 
 
 class CategoryAlreadyExistsError(AppException):
     status_code = status.HTTP_409_CONFLICT
     code = "CATEGORY_ALREADY_EXISTS"
-    message = "A category with this name is already registered."
+    message = "Já existe uma categoria com este nome."
 
 
 class CategoryHasProductsError(AppException):
     status_code = status.HTTP_409_CONFLICT
     code = "CATEGORY_HAS_PRODUCTS"
-    message = "You can't delete a category with products."
+    message = "Não é possível remover uma categoria com produtos."
 
 
 # --- Generic ---
@@ -117,4 +120,4 @@ class CategoryHasProductsError(AppException):
 class InternalConfigurationError(AppException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     code = "INTERNAL_CONFIGURATION_ERROR"
-    message = "A required configuration is missing or invalid. Please contact support."
+    message = "Configuração ausente ou inválida. Por favor contate o suporte."
