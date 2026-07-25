@@ -12,7 +12,7 @@ class Category(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100), unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(
-            DateTime(timezone=True), server_default=func.now()
-        )
+        DateTime(timezone=True), server_default=func.now()
+    )
 
     products: Mapped[list["Product"]] = relationship(back_populates="category")

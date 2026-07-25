@@ -13,6 +13,7 @@ from app.users.router import router as users_router
 from app.auth.router import router as auth_router
 from app.categories.router import router as categories_router
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     schema_path = Path("swagger/openapi.json")
@@ -21,6 +22,7 @@ async def lifespan(app: FastAPI):
         encoding="utf-8",
     )
     yield
+
 
 app = FastAPI(
     title=settings.project_name,

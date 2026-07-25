@@ -24,7 +24,7 @@ def create_category(data: CategoryCreate, db: Session = Depends(get_db)):
 def list_categories(
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     service = CategoryService(db)
     items, total = service.get_all(limit, offset)
@@ -42,7 +42,9 @@ def list_category(category_id: int, db: Session = Depends(get_db)):
     response_model=CategoryOut,
     dependencies=[Depends(require_role("admin"))],
 )
-def update_category(category_id: int, data: CategoryUpdate, db: Session = Depends(get_db)):
+def update_category(
+    category_id: int, data: CategoryUpdate, db: Session = Depends(get_db)
+):
     service = CategoryService(db)
     return service.update_category(category_id, data)
 

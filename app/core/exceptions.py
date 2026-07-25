@@ -118,4 +118,3 @@ class InternalConfigurationError(AppException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     code = "INTERNAL_CONFIGURATION_ERROR"
     message = "A required configuration is missing or invalid. Please contact support."
-

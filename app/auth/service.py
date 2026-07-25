@@ -36,9 +36,7 @@ class AuthService:
         if customer_role is None:
             raise InternalConfigurationError(
                 message="Default role 'customer' is not configured.",
-                details={
-                    "role": "customer"
-                },
+                details={"role": "customer"},
             )
 
         user = User(

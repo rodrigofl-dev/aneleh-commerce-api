@@ -50,7 +50,7 @@ class CategoryService:
 
         if self.repository.has_products(category.id):
             raise CategoryHasProductsError
-    
+
         self.repository.delete(category)
 
     # Helpers #
@@ -59,7 +59,7 @@ class CategoryService:
         category = self.repository.get_by_id(category_id)
         if not category:
             raise CategoryNotFoundError
-        
+
         return category
 
     def _raise_if_duplicate(self, name: str) -> None:
