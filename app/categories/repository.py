@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
 from app.categories.models import Category
-from app.products.models import Product
 
 
 class CategoryRepository:
@@ -19,10 +18,6 @@ class CategoryRepository:
 
     def count_all(self) -> int:
         return self.db.query(Category).count()
-
-    def has_products(self, id: int) -> bool:
-        products = self.db.query(Product).filter(Product.category_id == id).count()
-        return True if products > 0 else False
 
     def save(self, category: Category) -> Category:
         self.db.add(category)

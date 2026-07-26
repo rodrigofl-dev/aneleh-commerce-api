@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.categories.repository import CategoryRepository
+from app.products.repository import ProductRepository
 from app.categories.models import Category
 from app.categories.schemas import CategoryCreate, CategoryUpdate
 
@@ -15,6 +16,7 @@ class CategoryService:
     def __init__(self, db: Session):
         self.db = db
         self.repository = CategoryRepository(db)
+        self.products_repository = ProductRepository(db)
 
     # API #
 
@@ -24,8 +26,8 @@ class CategoryService:
 
         return items, total
 
-    def get_by_id(self, category_id: int) -> Category:
-        return self._get_or_404(category_id)
+    def get_by_id(self, id: int) -> Category:
+        return self._get_or_404(id)
 
     def new_category(self, data: CategoryCreate) -> Category:
         self._raise_if_duplicate(data.name)
@@ -36,8 +38,8 @@ class CategoryService:
 
         return self.repository.save(category)
 
-    def update_category(self, category_id: int, data: CategoryUpdate) -> Category:
-        category = self._get_or_404(category_id)
+    def update(self, id: int, data: CategoryUpdate) -> Category:
+        category = self._get_or_404(id)
 
         if data.name and data.name != category.name:
             self._raise_if_duplicate(data.name)
@@ -45,18 +47,18 @@ class CategoryService:
 
         return self.repository.save(category)
 
-    def delete_category(self, category_id: int) -> None:
-        category = self._get_or_404(category_id)
+    def delete(self, id: int) -> None:
+        category = self._get_or_404(id)
 
-        if self.repository.has_products(category.id):
+        if self.products_repository.count_by_category(category.id) > 0:
             raise CategoryHasProductsError
 
         self.repository.delete(category)
 
     # Helpers #
 
-    def _get_or_404(self, category_id: int) -> Category:
-        category = self.repository.get_by_id(category_id)
+    def _get_or_404(self, id: int) -> Category:
+        category = self.repository.get_by_id(id)
         if not category:
             raise CategoryNotFoundError
 

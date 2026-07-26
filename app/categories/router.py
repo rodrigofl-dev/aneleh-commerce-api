@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, status, Query
 
 from sqlalchemy.orm import Session
 from app.core.deps import get_db, require_role
-from app.categories.schemas import CategoryOut, CategoryCreate, CategoryUpdate, CategoryListResponse
+from app.categories.schemas import (
+    CategoryOut,
+    CategoryCreate,
+    CategoryUpdate,
+    CategoryListResponse,
+)
 from app.categories.service import CategoryService
 
 router = APIRouter(prefix="/categories", tags=["categories"])
@@ -20,7 +25,7 @@ def create_category(data: CategoryCreate, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=CategoryListResponse)
-def list_categories(
+def get_all(
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
@@ -30,29 +35,27 @@ def list_categories(
     return CategoryListResponse(items=items, total=total, limit=limit, offset=offset)
 
 
-@router.get("/{category_id}", response_model=CategoryOut)
-def list_category(category_id: int, db: Session = Depends(get_db)):
+@router.get("/{id}", response_model=CategoryOut)
+def get_by_id(id: int, db: Session = Depends(get_db)):
     service = CategoryService(db)
-    return service.get_by_id(category_id)
+    return service.get_by_id(id)
 
 
 @router.patch(
-    "/{category_id}",
+    "/{id}",
     response_model=CategoryOut,
     dependencies=[Depends(require_role("admin"))],
 )
-def update_category(
-    category_id: int, data: CategoryUpdate, db: Session = Depends(get_db)
-):
+def update(id: int, data: CategoryUpdate, db: Session = Depends(get_db)):
     service = CategoryService(db)
-    return service.update_category(category_id, data)
+    return service.update(id, data)
 
 
 @router.delete(
-    "/{category_id}",
+    "/{id}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_role("admin"))],
 )
-def delete_category(category_id: int, db: Session = Depends(get_db)):
+def delete_category(id: int, db: Session = Depends(get_db)):
     service = CategoryService(db)
-    return service.delete_category(category_id)
+    return service.delete(id)
