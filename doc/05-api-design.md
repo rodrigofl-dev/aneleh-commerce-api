@@ -165,7 +165,14 @@
 - **Erros possíveis:** `404`.
 
 ### PATCH `/api/v1/products/{id}`
+- **Parâmetros (body, todos opcionais):** `name`, `description`, `price`, `category_id`, `active`.
 - **Resposta esperada:** `200`. Invalida o cache de detalhe do produto e da(s) listagem(ns) que o incluem.
+- **Erros possíveis:** `422` (preço ≤ 0, se enviado); `404 CATEGORY_NOT_FOUND` (se `category_id` enviado apontar pra categoria inexistente); `404` (produto não encontrado).
+
+### DELETE `/api/v1/products/{id}`
+- **Regra:** soft delete (marca `active=false`, RF-CATALOG-03 já trata produto inativo como fora da listagem padrão).
+- **Resposta esperada:** `204`.
+- **Erros possíveis:** `404`.
 
 ### PATCH `/api/v1/products/{id}/stock`
 - **Objetivo:** ajuste manual de estoque (reposição, correção).
