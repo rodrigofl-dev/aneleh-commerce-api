@@ -114,6 +114,21 @@ class CategoryHasProductsError(AppException):
     message = "Não é possível remover uma categoria com produtos."
 
 
+# --- Products ---
+
+
+class ProductNotFoundError(AppException):
+    status_code = status.HTTP_404_NOT_FOUND
+    code = "PRODUCT_NOT_FOUND"
+    message = "Produto não encontrado."
+
+
+class StockCannotBeNegativeError(AppException):
+    status_code = status.HTTP_409_CONFLICT
+    code = "STOCK_CANNOT_BE_NEGATIVE"
+    message = "Não é possível alterar o stock para um valor negativo."
+
+
 # --- Generic ---
 
 
