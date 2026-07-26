@@ -125,6 +125,16 @@ Toda decisão técnica deste projeto foi documentada antes de ser implementada. 
 
 ---
 
+## Novas funcionalidades
+
+Lista de funcionalidades que surgiram como ideia para agregar ao projeto após o início. \
+Elas serão incluídas na documentação após detalhamento.
+
+- Upload de imagens
+- Filtros de busca
+- Cupons/Vouchers
+- Loggin
+
 ## Autor
 
 Projeto pessoal desenvolvido para consolidar e demonstrar prática de arquitetura backend em Python. Feedback e sugestões são bem-vindos.
