@@ -75,14 +75,14 @@ def test_me_update_password_allows_login_with_new_password(
     response = client.patch(
         "/api/v1/users/me",
         headers={"Authorization": f"Bearer {token}"},
-        json={"password": "123"},
+        json={"password": "12345678"},
     )
 
     assert response.status_code == 200
 
     login_response = client.post(
         "/api/v1/auth/login",
-        json={"email": "jake@example.com", "password": "123"},
+        json={"email": "jake@example.com", "password": "12345678"},
     )
     assert login_response.status_code == 200
 
@@ -93,7 +93,7 @@ def test_me_update_password_revokes_current_token(client, register_and_get_token
     client.patch(
         "/api/v1/users/me",
         headers={"Authorization": f"Bearer {token}"},
-        json={"password": "123"},
+        json={"password": "12345678"},
     )
 
     response = client.get(
