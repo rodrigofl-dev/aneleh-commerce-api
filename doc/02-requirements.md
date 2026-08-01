@@ -41,9 +41,9 @@ Para cada requisito funcional constam:
 - **Descrição:** permitir que um visitante crie uma conta com e-mail e senha.
 - **Regra de negócio:** e-mail deve ser único; senha deve ser armazenada com hash (bcrypt ou argon2, ver NFR); todo usuário criado por este endpoint recebe o papel `customer` por padrão — não é possível se auto-cadastrar como `admin`.
 - **Critérios de aceite:**
-  - [ ] Cadastro rejeita e-mail duplicado com erro claro.
-  - [ ] Senha nunca é retornada em nenhuma resposta, nem em log.
-  - [ ] Usuário criado consegue autenticar imediatamente após o cadastro.
+  - [x] Cadastro rejeita e-mail duplicado com erro claro.
+  - [x] Senha nunca é retornada em nenhuma resposta, nem em log.
+  - [x] Usuário criado consegue autenticar imediatamente após o cadastro.
 - **Dependências:** nenhuma.
 
 ### RF-AUTH-02 — Login (emissão de token)
@@ -51,9 +51,9 @@ Para cada requisito funcional constam:
 - **Descrição:** autenticar usuário via e-mail/senha e devolver um JWT.
 - **Regra de negócio:** usa o esquema OAuth2 Password Flow apenas como padrão de recebimento de credenciais (`OAuth2PasswordBearer`) — não há autorização de terceiros envolvida. O token deve carregar o `id` do usuário e o(s) papel(is), com tempo de expiração definido.
 - **Critérios de aceite:**
-  - [ ] Credenciais inválidas retornam erro genérico (não revelar se o e-mail existe ou não).
-  - [ ] Token expira no tempo configurado.
-  - [ ] Payload do token não contém dado sensível (senha, hash etc.).
+  - [x] Credenciais inválidas retornam erro genérico (não revelar se o e-mail existe ou não).
+  - [x] Token expira no tempo configurado.
+  - [x] Payload do token não contém dado sensível (senha, hash etc.).
 - **Dependências:** RF-AUTH-01.
 
 ### RF-AUTH-03 — Logout / invalidação de token
@@ -61,8 +61,8 @@ Para cada requisito funcional constam:
 - **Descrição:** permitir invalidar um token antes do seu tempo natural de expiração.
 - **Regra de negócio:** o token invalidado entra em uma blacklist no Redis com TTL igual ao tempo restante de validade do token — evita crescer a blacklist indefinidamente.
 - **Critérios de aceite:**
-  - [ ] Requisição com token na blacklist é rejeitada mesmo que o token ainda não tenha expirado.
-  - [ ] Entrada da blacklist expira sozinha no Redis (sem necessidade de limpeza manual).
+  - [x] Requisição com token na blacklist é rejeitada mesmo que o token ainda não tenha expirado.
+  - [x] Entrada da blacklist expira sozinha no Redis (sem necessidade de limpeza manual).
 - **Dependências:** RF-AUTH-02, Redis configurado.
 
 ### RF-AUTH-04 — Autorização por papel (RBAC)
@@ -70,8 +70,8 @@ Para cada requisito funcional constam:
 - **Descrição:** restringir endpoints por papel do usuário autenticado.
 - **Regra de negócio:** cada endpoint declara explicitamente quais papéis podem acessá-lo. Ausência de papel compatível retorna erro de permissão (não erro de autenticação).
 - **Critérios de aceite:**
-  - [ ] Endpoint de `admin` retorna erro de permissão para usuário `customer` autenticado.
-  - [ ] Erro de "sem permissão" é distinguível de "não autenticado" no formato de resposta (ver NFR de padrão de erro).
+  - [x] Endpoint de `admin` retorna erro de permissão para usuário `customer` autenticado.
+  - [x] Erro de "sem permissão" é distinguível de "não autenticado" no formato de resposta (ver NFR de padrão de erro).
 - **Dependências:** RF-AUTH-02.
 
 ---
@@ -83,8 +83,8 @@ Para cada requisito funcional constam:
 - **Descrição:** usuário autenticado consulta seus próprios dados.
 - **Regra de negócio:** um usuário só pode ver o próprio perfil, exceto `admin`, que pode consultar qualquer perfil.
 - **Critérios de aceite:**
-  - [ ] `customer` recebe erro de permissão ao tentar acessar perfil de outro usuário.
-  - [ ] `admin` consegue consultar qualquer perfil por ID.
+  - [x] `customer` recebe erro de permissão ao tentar acessar perfil de outro usuário.
+  - [x] `admin` consegue consultar qualquer perfil por ID.
 - **Dependências:** RF-AUTH-04.
 
 ### RF-USERS-02 — Atualização de perfil
@@ -92,8 +92,8 @@ Para cada requisito funcional constam:
 - **Descrição:** usuário atualiza seus próprios dados (nome, e-mail, senha).
 - **Regra de negócio:** troca de e-mail exige unicidade (mesma regra do cadastro); troca de senha invalida os tokens emitidos anteriormente (força novo login).
 - **Critérios de aceite:**
-  - [ ] Atualização de senha adiciona os tokens antigos à blacklist ou reduz seu tempo de vida.
-  - [ ] Tentativa de trocar para e-mail já existente é rejeitada.
+  - [x] Atualização de senha adiciona os tokens antigos à blacklist ou reduz seu tempo de vida.
+  - [x] Tentativa de trocar para e-mail já existente é rejeitada.
 - **Dependências:** RF-AUTH-01, RF-AUTH-03.
 
 ### RF-USERS-03 — Gestão de papéis (admin)
@@ -101,8 +101,8 @@ Para cada requisito funcional constam:
 - **Descrição:** `admin` promove ou rebaixa o papel de um usuário.
 - **Regra de negócio:** um `admin` não pode remover o próprio papel de admin caso seja o único administrador do sistema (evita lockout).
 - **Critérios de aceite:**
-  - [ ] Sistema rejeita a remoção do último `admin` existente.
-  - [ ] Mudança de papel reflete imediatamente nas próximas requisições autenticadas (não exige novo login, já que a checagem de papel pode ser feita no banco, não apenas no token — deixar essa decisão explícita em `03-architecture.md`).
+  - [x] Sistema rejeita a remoção do último `admin` existente.
+  - [x] Mudança de papel reflete imediatamente nas próximas requisições autenticadas (não exige novo login, já que a checagem de papel pode ser feita no banco, não apenas no token — deixar essa decisão explícita em `03-architecture.md`).
 - **Dependências:** RF-AUTH-04.
 
 ---
@@ -114,8 +114,8 @@ Para cada requisito funcional constam:
 - **Descrição:** `admin` cria categorias de produto.
 - **Regra de negócio:** nome de categoria é único; categoria com produtos vinculados não pode ser excluída (`DELETE`)..
 - **Critérios de aceite:**
-  - [ ] Categoria duplicada é rejeitada.
-  - [ ] Categoria com produtos vinculados não pode ser excluída (`409 CATEGORY_HAS_PRODUCTS`).
+  - [x] Categoria duplicada é rejeitada.
+  - [x] Categoria com produtos vinculados não pode ser excluída (`409 CATEGORY_HAS_PRODUCTS`).
 - **Dependências:** RF-AUTH-04.
 
 ### RF-CATALOG-02 — Cadastro de produto
@@ -123,8 +123,8 @@ Para cada requisito funcional constam:
 - **Descrição:** `admin` cria produtos vinculados a uma categoria.
 - **Regra de negócio:** produto sempre pertence a exatamente uma categoria; preço não pode ser negativo ou zero; produto criado começa com estoque zerado (estoque é ajustado separadamente, ver módulo STOCK).
 - **Critérios de aceite:**
-  - [ ] Produto sem categoria válida é rejeitado.
-  - [ ] Produto com preço ≤ 0 é rejeitado.
+  - [x] Produto sem categoria válida é rejeitado.
+  - [x] Produto com preço ≤ 0 é rejeitado.
 - **Dependências:** RF-CATALOG-01.
 
 ### RF-CATALOG-03 — Listagem de produtos (com cache)

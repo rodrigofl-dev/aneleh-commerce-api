@@ -84,10 +84,10 @@ Não há prazos. O critério de avanço é sempre: **os critérios de aceite da 
 **Dependências:** Fase 1 (endpoints administrativos exigem RBAC).
 
 **Checklist:**
-- [ ] Tabela `categories` e `products` migradas.
-- [ ] CRUD de categoria com exclusão real, bloqueada se houver produto vinculado.
-- [ ] CRUD de produto com validação de preço e vínculo obrigatório a categoria.
-- [ ] Seed com categorias e produtos de exemplo (NFR-09).
+- [x] Tabela `categories` e `products` migradas.
+- [x] CRUD de categoria com exclusão real, bloqueada se houver produto vinculado.
+- [x] CRUD de produto com validação de preço e vínculo obrigatório a categoria.
+- [x] Seed com categorias e produtos de exemplo (NFR-09).
 
 **Definition of Done:** `admin` consegue criar categoria, criar produto vinculado, e o sistema recusa corretamente os casos inválidos (categoria duplicada, produto sem categoria, preço inválido).
 
