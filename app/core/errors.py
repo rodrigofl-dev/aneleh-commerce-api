@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 
 def _error_response(
@@ -8,13 +9,15 @@ def _error_response(
 ):
     return JSONResponse(
         status_code=status_code,
-        content={
-            "error": {
-                "code": code,
-                "message": message,
-                "details": details or {},
-            }
-        },
+        content=jsonable_encoder(
+            {"error":
+                {
+                    "code": code,
+                    "message": message,
+                    "details": details or {},
+                }
+            },
+        )
     )
 
 
