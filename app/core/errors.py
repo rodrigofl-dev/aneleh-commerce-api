@@ -10,14 +10,14 @@ def _error_response(
     return JSONResponse(
         status_code=status_code,
         content=jsonable_encoder(
-            {"error":
-                {
+            {
+                "error": {
                     "code": code,
                     "message": message,
                     "details": details or {},
                 }
             },
-        )
+        ),
     )
 
 

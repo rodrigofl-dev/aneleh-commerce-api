@@ -1,15 +1,15 @@
 def test_patch_product_with_invalid_price(client, register_and_get_token):
     token = register_and_get_token("admin@example.com", role="admin")
-    
+
     # Create a category first
     category_response = client.post(
         "/api/v1/categories",
         json={"name": "Electronics"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     category_id = category_response.json()["id"]
     assert category_response.status_code == 201
-    
+
     # Create a product
     product_response = client.post(
         "/api/v1/products",
@@ -19,16 +19,16 @@ def test_patch_product_with_invalid_price(client, register_and_get_token):
             "category_id": category_id,
             "price": 699.99,
         },
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     product_id = product_response.json()["id"]
     assert product_response.status_code == 201
-    
+
     # Test PATCH with invalid price (<= 0)
     response = client.patch(
         f"/api/v1/products/{product_id}",
         json={"price": 0},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
 
     assert response.status_code == 422
@@ -37,16 +37,16 @@ def test_patch_product_with_invalid_price(client, register_and_get_token):
 
 def test_patch_product_with_missing_category(client, register_and_get_token):
     token = register_and_get_token("admin@example.com", role="admin")
-        
+
     # Create a category first
     category_response = client.post(
         "/api/v1/categories",
         json={"name": "Electronics"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     category_id = category_response.json()["id"]
     assert category_response.status_code == 201
-    
+
     # Create a product
     product_response = client.post(
         "/api/v1/products",
@@ -56,7 +56,7 @@ def test_patch_product_with_missing_category(client, register_and_get_token):
             "category_id": category_id,
             "price": 699.99,
         },
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     product_id = product_response.json()["id"]
     assert product_response.status_code == 201
@@ -65,7 +65,7 @@ def test_patch_product_with_missing_category(client, register_and_get_token):
     response = client.patch(
         f"/api/v1/products/{product_id}",
         json={"category_id": 55},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
 
     assert response.status_code == 404
@@ -79,7 +79,7 @@ def test_patch_product_not_found(client, register_and_get_token):
     response = client.patch(
         "/api/v1/products/999",
         json={"name": "Test Product"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
 
     assert response.status_code == 404
@@ -88,12 +88,12 @@ def test_patch_product_not_found(client, register_and_get_token):
 
 def test_patch_product_success(client, register_and_get_token):
     token = register_and_get_token("admin@example.com", role="admin")
-    
+
     # Create a category first
     category_response = client.post(
         "/api/v1/categories",
         json={"name": "Electronics"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     category_id = category_response.json()["id"]
     assert category_response.status_code == 201
@@ -102,11 +102,11 @@ def test_patch_product_success(client, register_and_get_token):
     new_category_response = client.post(
         "/api/v1/categories",
         json={"name": "Good stuff"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     new_category_id = new_category_response.json()["id"]
     assert new_category_response.status_code == 201
-    
+
     # Create a product
     product_response = client.post(
         "/api/v1/products",
@@ -116,7 +116,7 @@ def test_patch_product_success(client, register_and_get_token):
             "category_id": category_id,
             "price": 699.99,
         },
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     product_id = product_response.json()["id"]
     assert product_response.status_code == 201
@@ -130,7 +130,7 @@ def test_patch_product_success(client, register_and_get_token):
             "price": 200.0,
             "category_id": new_category_id,
         },
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
 
     assert response.status_code == 200

@@ -1,11 +1,11 @@
 def test_create_category(client, register_and_get_token):
     token = register_and_get_token("admin@example.com", role="admin")
 
-    # Create category    
+    # Create category
     response = client.post(
         "/api/v1/categories",
         json={"name": "Electronics"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == 201
     assert response.json()["name"] == "Electronics"
@@ -14,9 +14,9 @@ def test_create_category(client, register_and_get_token):
     response = client.post(
         "/api/v1/categories",
         json={"name": "Electronics"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
-    
+
     assert response.status_code == 409
     assert response.json()["error"]["code"] == "CATEGORY_ALREADY_EXISTS"
 
@@ -28,7 +28,7 @@ def test_admin_only(client, register_and_get_token):
     response = client.post(
         "/api/v1/categories",
         json={"name": "Sports"},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {token}"},
     )
 
     assert response.status_code == 403
