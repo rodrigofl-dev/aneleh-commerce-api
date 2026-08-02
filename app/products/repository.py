@@ -10,6 +10,9 @@ class ProductRepository:
     def get_by_id(self, id: int) -> Product | None:
         return self.db.query(Product).filter(Product.id == id).first()
 
+    def get_by_name(self, name: str) -> Product | None:
+        return self.db.query(Product).filter(Product.name == name).first()
+
     def get_all(
         self,
         limit: int,
